@@ -67,13 +67,13 @@ $$
 峰提取时按目标排序，用生态位半径把疏远点判定为新峰：
 
 $$
-d(p,\, \text{任一已有代表}) > r \;\;\Longrightarrow\;\; p \text{ 是新峰代表}
+d(p,\; x_r) > r \quad\Longrightarrow\quad p \ \text{is a new peak representative}
 $$
 
-**自估半径**（不依赖真峰半径 `problem.nichRad`）：
+其中 $x_r$ 为任一已有代表点。**自估半径**不依赖真峰半径 `problem.nichRad`：
 
 $$
-r \;=\; \operatorname*{median}_{i}\;\min_{j\neq i}\;\lVert x_i - x_j\rVert
+r \;=\; \underset{\,i}{\operatorname{median}}\ \ \min_{j\neq i}\ \lVert x_i - x_j\rVert
 $$
 
 ### 2.3 局部精修：Nelder-Mead 无导数单纯形
@@ -85,8 +85,8 @@ $$
 对阈值过滤后的报告集做简化密度聚类（Union-Find 连通分量），每簇只保留目标最优的代表，消除「多报冗余」：
 
 $$
-\varepsilon \;=\; \operatorname*{median}_{i}\;\min_{j\neq i}\;\lVert \hat{x}_i - \hat{x}_j\rVert,\qquad
-\hat{x}_k \;=\; \operatorname*{arg\,min}_{x \in \text{簇}_k} F(x)
+\varepsilon \;=\; \underset{\,i}{\operatorname{median}}\ \ \min_{j\neq i}\ \lVert \hat{x}_i - \hat{x}_j\rVert, \qquad
+\hat{x}_k \;=\; \underset{x \in C_k}{\operatorname{arg\,min}}\ F(x)
 $$
 
 这一模块不改变任何搜索核心代码，是正交的即插即用组件，是 Precision 从 0.756 → 0.992 的关键。

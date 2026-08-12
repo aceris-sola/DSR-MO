@@ -121,13 +121,13 @@ $$
 峰提取时按目标排序，用生态位半径把疏远点判定为新峰：
 
 $$
-d(p,\, \text{任一已有代表}) > r \;\;\Longrightarrow\;\; p \text{ 是新峰代表}
+d(p,\; x_r) > r \quad\Longrightarrow\quad p \ \text{is a new peak representative}
 $$
 
-**自估半径**（不依赖真峰半径 `problem.nichRad`，避免先知）：
+其中 $x_r$ 为任一已有代表点，$r$ 为生态位半径。**自估半径**不依赖真峰半径 `problem.nichRad`（避免先知）：
 
 $$
-r \;=\; \operatorname*{median}_{i}\;\min_{j\neq i}\;\lVert x_i - x_j\rVert
+r \;=\; \underset{\,i}{\operatorname{median}}\ \ \min_{j\neq i}\ \lVert x_i - x_j\rVert
 $$
 
 即取候选池「最近邻距离中位数」作为当前景观峰间距的估计，自适应、可复现。
@@ -141,24 +141,27 @@ $$
 对阈值过滤后的报告集做简化密度聚类（Union-Find 连通分量），每簇只保留目标最优的代表，消除「多报冗余」：
 
 $$
-\varepsilon \;=\; \operatorname*{median}_{i}\;\min_{j\neq i}\;\lVert \hat{x}_i - \hat{x}_j\rVert,\qquad
-\hat{x}_k \;=\; \operatorname*{arg\,min}_{x \in \text{簇}_k} F(x)
+\varepsilon \;=\; \underset{\,i}{\operatorname{median}}\ \ \min_{j\neq i}\ \lVert \hat{x}_i - \hat{x}_j\rVert, \qquad
+\hat{x}_k \;=\; \underset{x \in C_k}{\operatorname{arg\,min}}\ F(x)
 $$
 
-其中 $\varepsilon$ 为自适应聚类半径（无先知），每簇保留目标最优的点。
+其中 $\varepsilon$ 为自适应聚类半径（无先知），$C_k$ 为第 $k$ 个簇，每簇保留目标最优的点。
 
 这一模块不带任何搜索核心改动，是正交的即插即用组件，是 Precision 从 0.756 → 0.992 的关键。
 
 ### 4.5 CEC 2026 评测指标
 
 $$
-\begin{aligned}
-\text{RPR}\;=\;\frac{N_{\text{found}}}{N_{\text{GM}}} && \text{找到的全局峰占比}\\[2mm]
-\text{Precision}\;=\;\text{RPR}\cdot\frac{N_{\text{GM}}}{N_{\text{sol}}} && \text{报告越紧凑越高}\\[2mm]
-\text{F1}\;=\;\frac{2\,\text{Precision}\cdot\text{RPR}}{\text{Precision}+\text{RPR}}\\[2mm]
-\text{Official}\ \text{Score}\;=\;\tfrac{1}{2}\big(\text{RPR}+\text{F1}\big)
-\end{aligned}
+\text{RPR} = \dfrac{N_{\text{found}}}{N_{\text{GM}}}, \qquad
+\text{Precision} = \text{RPR}\cdot\dfrac{N_{\text{GM}}}{N_{\text{sol}}}, \qquad
+\text{F1} = \dfrac{2\,\text{Precision}\cdot\text{RPR}}{\text{Precision}+\text{RPR}}
 $$
+
+$$
+\text{Official Score} = \tfrac{1}{2}\big(\text{RPR}+\text{F1}\big)
+$$
+
+其中 $N_{\text{found}}$ 为命中的全局峰数，$N_{\text{GM}}$ 为真实全局峰总数，$N_{\text{sol}}$ 为报告的解个数。
 
 ## 5. 遇到的问题与解决
 

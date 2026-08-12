@@ -127,7 +127,7 @@ $$
 **Oracle-free radius** (does not rely on the true peak radius `problem.nichRad`):
 
 $$
-r \;=\; \operatorname*{median}_{i}\;\min_{j\neq i}\;\lVert x_i - x_j\rVert
+r \;=\; \underset{\,i}{\operatorname{median}}\ \ \min_{j\neq i}\ \lVert x_i - x_j\rVert
 $$
 
 i.e. the median nearest-neighbor distance estimates the current landscape's peak spacing; adaptive and reproducible.
@@ -141,8 +141,8 @@ For each candidate peak representative, iterate Reflect → Expand → Contract 
 A simplified density clustering (Union-Find connected components) is applied to the threshold-filtered report set; only the best representative (lowest objective) is kept per cluster, removing redundant reports:
 
 $$
-\varepsilon \;=\; \operatorname*{median}_{i}\;\min_{j\neq i}\;\lVert \hat{x}_i - \hat{x}_j\rVert,\qquad
-\hat{x}_k \;=\; \operatorname*{arg\,min}_{x \in \text{cluster}_k} F(x)
+\varepsilon \;=\; \underset{\,i}{\operatorname{median}}\ \ \min_{j\neq i}\ \lVert \hat{x}_i - \hat{x}_j\rVert, \qquad
+\hat{x}_k \;=\; \underset{x \in C_k}{\operatorname{arg\,min}}\ F(x)
 $$
 
 where $\varepsilon$ is the adaptive clustering radius (oracle-free); each cluster keeps the point with the lowest objective.
@@ -152,12 +152,13 @@ This module changes no search-core code and is an orthogonal, plug-and-play comp
 ### 4.5 CEC 2026 Evaluation Metrics
 
 $$
-\begin{aligned}
-\text{RPR}\;=\;\frac{N_{\text{found}}}{N_{\text{GM}}} && \text{fraction of global peaks found}\\[2mm]
-\text{Precision}\;=\;\text{RPR}\cdot\frac{N_{\text{GM}}}{N_{\text{sol}}} && \text{higher when reporting is compact}\\[2mm]
-\text{F1}\;=\;\frac{2\,\text{Precision}\cdot\text{RPR}}{\text{Precision}+\text{RPR}}\\[2mm]
-\text{Official}\ \text{Score}\;=\;\tfrac{1}{2}\big(\text{RPR}+\text{F1}\big)
-\end{aligned}
+\text{RPR} = \dfrac{N_{\text{found}}}{N_{\text{GM}}}, \qquad
+\text{Precision} = \text{RPR}\cdot\dfrac{N_{\text{GM}}}{N_{\text{sol}}}, \qquad
+\text{F1} = \dfrac{2\,\text{Precision}\cdot\text{RPR}}{\text{Precision}+\text{RPR}}
+$$
+
+$$
+\text{Official Score} = \tfrac{1}{2}\big(\text{RPR}+\text{F1}\big)
 $$
 
 ## 5. Problems Encountered & Solutions
