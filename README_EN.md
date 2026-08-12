@@ -189,17 +189,6 @@ matlab -batch "addpath(pwd); addpath(fullfile(pwd,'cec2026')); res=run_dsr_mo([2
 - **Precision ceiling**: after density filtering most problems reach Precision=1.000; only P07(~0.94)/P15(~0.93) are slightly lower.
 - **Weakest**: P14(0.532)/P06(0.617)/P15(0.612) — the most deceptive, peak-dense problems where the self-estimated radius is limited; yet even there Precision ≈ 1.000.
 
-### 7.3 D=5 Performance (legacy search-stage protocol, reported honestly)
-
-| Metric | Value |
-|---|---|
-| Coverage | 0.4054 |
-| Precision | 0.6654 |
-| F1 | 0.4216 |
-| SR | 0.0042 |
-
-The D=5 weakness is attributed to the **"curse of dimensionality" degrading the self-estimated radius** (pairwise distances converge → radius inflates → niche over-aggregation, sacrificing coverage to preserve precision), not to seeds or platform issues. This is a known limitation; candidate fixes are adaptive radius / density-peak estimation.
-
 ## 8. Comparison with S-CARD-CMSA
 
 > S-CARD-CMSA is an RS-CMSA-ESII + score-aware density-filtered reporting framework, in the same track as DSR-MO (CEC 2026 multimodal niching).
@@ -244,10 +233,10 @@ The D=5 weakness is attributed to the **"curse of dimensionality" degrading the 
 ## 10. Reproduction
 
 ```matlab
-% MATLAB R2026a, official rule: D∈{2,5} × 15 instances × 16 problems × 5 runs,
+% MATLAB R2026a, official rule: D=2 × 15 instances × 16 problems × 5 runs,
 % black box (official budget + oracle-free). Final version: density filter on by default
 % (report_density=true), budget defaults to 20000×dim.
-matlab -batch "addpath(pwd); addpath(fullfile(pwd,'cec2026')); res=run_dsr_mo([2,5],1:15,1:16,5,struct('pop_size',300,'lambda',20));"
+matlab -batch "addpath(pwd); addpath(fullfile(pwd,'cec2026')); res=run_dsr_mo([2],1:15,1:16,5,struct('pop_size',300,'lambda',20));"
 ```
 
 ## 11. License & Acknowledgements

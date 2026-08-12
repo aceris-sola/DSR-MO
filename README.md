@@ -189,17 +189,6 @@ matlab -batch "addpath(pwd); addpath(fullfile(pwd,'cec2026')); res=run_dsr_mo([2
 - **精度上限**：密度过滤后绝大多数问题 Precision=1.000，仅 P07(~0.94)/P15(~0.93) 略低。
 - **最弱**：P14(0.532)/P06(0.617)/P15(0.612) —— 欺骗性最强、峰最密集的问题，自估半径在此受限，但即便覆盖受限其 Precision 也≈1.000。
 
-### 7.3 D=5 表现（旧版搜索口径，如实报告）
-
-| 指标 | 数值 |
-|---|---|
-| Coverage | 0.4054 |
-| Precision | 0.6654 |
-| F1 | 0.4216 |
-| SR | 0.0042 |
-
-D=5 的短板可归因于**自估半径在高维的「维度灾难」失效**（点距趋于一致 → 半径放大 → 生态位过度聚合，牺牲覆盖、保住精度），而非种子或平台问题。这是已知局限，改进方向为自适应半径 / 密度峰值估计。
-
 ## 8. 与 S-CARD-CMSA 的对比
 
 > S-CARD-CMSA 是 RS-CMSA-ESII + 得分感知密度过滤报告框架，与 DSR-MO 同赛道（CEC 2026 多模态 niching）。
@@ -244,9 +233,9 @@ D=5 的短板可归因于**自估半径在高维的「维度灾难」失效**（
 ## 10. 复现方法
 
 ```matlab
-% MATLAB R2026a，官方规则：D∈{2,5} × 15 实例 × 16 题 × 5 次，黑盒（官方预算 + 无先知）
+% MATLAB R2026a，官方规则：D=2 × 15 实例 × 16 题 × 5 次，黑盒（官方预算 + 无先知）
 % 最终版：报告期密度过滤默认开启（report_density=true），预算默认 20000×dim
-matlab -batch "addpath(pwd); addpath(fullfile(pwd,'cec2026')); res=run_dsr_mo([2,5],1:15,1:16,5,struct('pop_size',300,'lambda',20));"
+matlab -batch "addpath(pwd); addpath(fullfile(pwd,'cec2026')); res=run_dsr_mo([2],1:15,1:16,5,struct('pop_size',300,'lambda',20));"
 ```
 
 ## 11. 许可与致谢
