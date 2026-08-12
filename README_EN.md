@@ -8,6 +8,10 @@
 
 DSR-MO is a black-box, strategy-agnostic single-objective multimodal optimization algorithm. Its core idea is **"claim the landscape first, then cultivate it"**: the two hard sub-problems — *covering every peak basin* (discrete coverage) and *landing exactly on the basin floor* (continuous convergence) — are decoupled and handled by dedicated mechanisms, rather than squeezed simultaneously through a single objective signal.
 
+> **🎯 Positioning: an extremely low-dimensional MMO algorithm**
+>
+> DSR-MO targets **D=2** specifically, delivering full coverage combined with high precision under the official CEC 2026 protocol (16 problems × 15 instances, budget 20,000×D). This is a deliberate choice: our "claim first, cultivate later" philosophy relies on the **oracle-free self-estimated niche radius**, which is most effective in low dimensions. In high dimensions (D≥5) the "curse of dimensionality" makes pairwise distances converge, degrading the self-estimated radius (see §8 limitations). We therefore concentrate our effort on the realistic, high-frequency D=2 regime rather than chasing unrealistic high-dimensional generalization.
+
 On the official CEC 2026 evaluation protocol (16 problems × 15 instances × D=2, budget 20,000×D), DSR-MO reaches **Coverage 0.899 / Precision 0.992 / F1 0.935 / official score 0.917**, outperforming the published 0.818 of S-CARD-CMSA (RS-CMSA-ESII + density-filtered reporting).
 
 ---
@@ -36,6 +40,7 @@ On the official CEC 2026 evaluation protocol (16 problems × 15 instances × D=2
 - **Budget-insensitive**: empirically, coverage is *not* bought by a large evaluation budget; the algorithm is robust to budget.
 - **Cross-platform**: results are bit-identical between MATLAB and GNU Octave (only floating-point rounding differences).
 - **Reproducible**: a one-line call to `run_dsr_mo` regenerates all reported numbers.
+- **Known limitation (honest)**: the low-dimensional rule is that the oracle-free self-estimated niche radius works best in low dimensions. In high dimensions (D≥5) pairwise distances converge, degrading the self-estimated radius and causing niche over-aggregation with lower coverage. DSR-MO is therefore **explicitly scoped to the D=2 extremely-low-dimensional regime** and makes no claim of high-dimensional generalization.
 
 ## 2. Algorithm Architecture
 
@@ -226,9 +231,22 @@ matlab -batch "addpath(pwd); addpath(fullfile(pwd,'cec2026')); res=run_dsr_mo([2
 | `dsr_mo_nelder_mead.m` | Local refinement (Nelder-Mead) |
 | `dsr_mo_metrics.m` | Metrics (RPR / Precision / F1 / Coverage / SR) |
 | `run_dsr_mo.m` | Main entry point |
+| `make_figures.m` | Regenerate all figures (output to `figs/`) |
+| `figs/` | 6 evaluation figures (see §9.1) |
 | `cec2026/` | CEC 2026 benchmark suite (`ProblemMM.m` / `BasicFun.m` / `UtilityMethod.m` / `pdist2.m` / `data/`) |
 | `REPORT.md` | Detailed evaluation report |
 | `README.md` / `README_EN.md` | This documentation (Chinese / English) |
+
+### 9.1 Figures (figs/)
+
+| Figure | Content | Use |
+|---|---|---|
+| `fig1_bar_compare.png` | Per-problem Coverage & Precision grouped bars | Paper §4 / main figure |
+| `fig2_radar.png` | DSR-MO vs S-CARD-CMSA radar (4 published metrics) | Abstract / comparison |
+| `fig3_scatter_peaks.png` | Decision-space peaks P02/P14/P05 (true ○ vs found ✕) | Mechanism |
+| `fig4_graft.png` | Density filter on/off (P02/P05/P08) | Reporting dedup validation |
+| `fig5_convergence.png` | Convergence curve P02 (budget vs peaks found) | Convergence analysis |
+| `fig6_radius_box.png` | Self-estimated niche radius distribution boxplot | Parameter analysis |
 
 ## 10. Reproduction
 
