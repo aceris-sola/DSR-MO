@@ -127,7 +127,7 @@ $$
 **Oracle-free radius** (does not rely on the true peak radius `problem.nichRad`):
 
 $$
-r \;=\; \underset{\,i}{\operatorname{median}}\ \ \min_{j\neq i}\ \lVert x_i - x_j\rVert
+r \;=\; \mathop{\mathrm{median}}\limits_{i}\ \ \min_{j\neq i}\ \lVert x_i - x_j\rVert
 $$
 
 i.e. the median nearest-neighbor distance estimates the current landscape's peak spacing; adaptive and reproducible.
@@ -141,8 +141,8 @@ For each candidate peak representative, iterate Reflect → Expand → Contract 
 A simplified density clustering (Union-Find connected components) is applied to the threshold-filtered report set; only the best representative (lowest objective) is kept per cluster, removing redundant reports:
 
 $$
-\varepsilon \;=\; \underset{\,i}{\operatorname{median}}\ \ \min_{j\neq i}\ \lVert \hat{x}_i - \hat{x}_j\rVert, \qquad
-\hat{x}_k \;=\; \underset{x \in C_k}{\operatorname{arg\,min}}\ F(x)
+\varepsilon \;=\; \mathop{\mathrm{median}}\limits_{i}\ \ \min_{j\neq i}\ \lVert \hat{x}_i - \hat{x}_j\rVert, \qquad
+\hat{x}_k \;=\; \mathop{\mathrm{arg\,min}}\limits_{x\in C_k} F(x)
 $$
 
 where $\varepsilon$ is the adaptive clustering radius (oracle-free); each cluster keeps the point with the lowest objective.

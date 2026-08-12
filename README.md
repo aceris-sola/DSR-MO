@@ -127,7 +127,7 @@ $$
 其中 $x_r$ 为任一已有代表点，$r$ 为生态位半径。**自估半径**不依赖真峰半径 `problem.nichRad`（避免先知）：
 
 $$
-r \;=\; \underset{\,i}{\operatorname{median}}\ \ \min_{j\neq i}\ \lVert x_i - x_j\rVert
+r \;=\; \mathop{\mathrm{median}}\limits_{i}\ \ \min_{j\neq i}\ \lVert x_i - x_j\rVert
 $$
 
 即取候选池「最近邻距离中位数」作为当前景观峰间距的估计，自适应、可复现。
@@ -141,8 +141,8 @@ $$
 对阈值过滤后的报告集做简化密度聚类（Union-Find 连通分量），每簇只保留目标最优的代表，消除「多报冗余」：
 
 $$
-\varepsilon \;=\; \underset{\,i}{\operatorname{median}}\ \ \min_{j\neq i}\ \lVert \hat{x}_i - \hat{x}_j\rVert, \qquad
-\hat{x}_k \;=\; \underset{x \in C_k}{\operatorname{arg\,min}}\ F(x)
+\varepsilon \;=\; \mathop{\mathrm{median}}\limits_{i}\ \ \min_{j\neq i}\ \lVert \hat{x}_i - \hat{x}_j\rVert, \qquad
+\hat{x}_k \;=\; \mathop{\mathrm{arg\,min}}\limits_{x\in C_k} F(x)
 $$
 
 其中 $\varepsilon$ 为自适应聚类半径（无先知），$C_k$ 为第 $k$ 个簇，每簇保留目标最优的点。

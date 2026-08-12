@@ -73,7 +73,7 @@ $$
 其中 $x_r$ 为任一已有代表点。**自估半径**不依赖真峰半径 `problem.nichRad`：
 
 $$
-r \;=\; \underset{\,i}{\operatorname{median}}\ \ \min_{j\neq i}\ \lVert x_i - x_j\rVert
+r \;=\; \mathop{\mathrm{median}}\limits_{i}\ \ \min_{j\neq i}\ \lVert x_i - x_j\rVert
 $$
 
 ### 2.3 局部精修：Nelder-Mead 无导数单纯形
@@ -85,8 +85,8 @@ $$
 对阈值过滤后的报告集做简化密度聚类（Union-Find 连通分量），每簇只保留目标最优的代表，消除「多报冗余」：
 
 $$
-\varepsilon \;=\; \underset{\,i}{\operatorname{median}}\ \ \min_{j\neq i}\ \lVert \hat{x}_i - \hat{x}_j\rVert, \qquad
-\hat{x}_k \;=\; \underset{x \in C_k}{\operatorname{arg\,min}}\ F(x)
+\varepsilon \;=\; \mathop{\mathrm{median}}\limits_{i}\ \ \min_{j\neq i}\ \lVert \hat{x}_i - \hat{x}_j\rVert, \qquad
+\hat{x}_k \;=\; \mathop{\mathrm{arg\,min}}\limits_{x\in C_k} F(x)
 $$
 
 这一模块不改变任何搜索核心代码，是正交的即插即用组件，是 Precision 从 0.756 → 0.992 的关键。
